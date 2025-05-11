@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Question For You</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial', sans-serif;
+            color: white;
+            /* overflow: hidden; */
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.5s ease;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 40px;
+        }
+        .option-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+        .hidden-message {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            margin-top: 20px;
+        }
+        .hidden-message.show {
+            max-height: 200px;
+        }
+        .romantic-message {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-style: italic;
+            line-height: 1.6;
+        }
+        .floating-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .heart {
+            position: absolute;
+            opacity: 0;
+            font-size: 20px;
+            animation: float 6s ease-in infinite;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="hearts"></div>
+    
+    <div class="container">
+        <h1>So... what are your plans?</h1>
+        <p>(I might have some suggestions if you're interested)</p>
+        
+        <div class="options">
+            <button class="option-btn" onclick="showMessage('no-plans')">I don't have any plans yet</button>
+            <button class="option-btn" onclick="showMessage('busy')">I'm pretty busy actually</button>
+            <button class="option-btn" onclick="showMessage('open')">I'm open to suggestions</button>
+            <button class="option-btn" onclick="showMessage('surprise')">Surprise me!</button>
+        </div>
+        
+        <div id="no-plans" class="hidden-message">
+            <div class="romantic-message">
+                Perfect! That means I get to plan something special for us. 
+                How about a romantic evening with all your favorite things?
+            </div>
+        </div>
+        
+        <div id="busy" class="hidden-message">
+            <div class="romantic-message">
+                Even the busiest people need breaks... 
+                Let me steal just a few hours of your time for something wonderful.
+            </div>
+        </div>
+        
+        <div id="open" class="hidden-message">
+            <div class="romantic-message">
+                I was hoping you'd say that! I've been thinking about...
+                <!-- </ul> style="text-align: left; margin-top: 10px;"> -->
+                    <l>A sunset picnic at our favorite spot</li>
+                    <i>A cozy movie night with your favorite films</li>
+                    <l>That restaurant you've been wanting to try</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div id="surprise" class="hidden-message">
+            <div class="romantic-message">
+                Alright! I have something special planned for you.
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            const heartEmojis = ['❤', '🧡', '💛', '💚', '💙', '💜', '🤎', '🖤', '💖', '💗'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = Math.random() * 100 + 'vh';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heart.style.animationDuration = (Math.random() * 8 + 4) + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heartsContainer.appendChild(heart);
+            }
+        }
+        
+        // Show message based on selection
+        function showMessage(id) {
+            // Hide all messages first
+            document.querySelectorAll('.hidden-message').forEach(el => {
+                el.classList.remove('show');
+            });
+            
+            // Show selected message
+            document.getElementById(id).classList.add('show');
+            
+            // Special effect for surprise option
+            if (id === 'surprise') {
+                createHearts();
+            }
+        }
+        
+        // Confetti effect
+        function createConfetti() {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            const container = document.querySelector('.container');
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.opacity = '1';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                confetti.style.animation = `confetti-fall ${Math.random() * 3 + 2}s linear forwards`;
+                
+                // Create animation on the fly
+                const animation = document.createElement('style');
+                animation.innerHTML = `
+                    @keyframes confetti-fall {
+                        to {
+                            top: 100%;
+                            transform: rotate(${Math.random() * 360}deg);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(animation);
+                
+                container.appendChild(confetti);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    confetti.remove();
+                    animation.remove();
+                }, 5000);
+            }
+        }
+        
+        // Initialize hearts
+        createHearts();
+    </script>
+</body>
+</html>
